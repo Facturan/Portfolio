@@ -49,7 +49,7 @@ const Counter = ({ target, suffix, label }) => {
 };
 
 // WorkCard Component to manage individual card tilt and fallback images
-const WorkCard = ({ title, category, description, imageUrl, isLarge, fallbackChar }) => {
+const WorkCard = ({ title, category, description, imageUrl, isLarge, fallbackChar, onImageClick }) => {
   const cardRef = useRef(null);
   const [imageError, setImageError] = useState(false);
 
@@ -82,6 +82,8 @@ const WorkCard = ({ title, category, description, imageUrl, isLarge, fallbackCha
           className="work-img"
           loading="lazy"
           onError={() => setImageError(true)}
+          onClick={() => onImageClick && onImageClick(imageUrl, title)}
+          style={{ cursor: 'zoom-in' }}
         />
       ) : (
         <div
@@ -110,8 +112,36 @@ const WorkCard = ({ title, category, description, imageUrl, isLarge, fallbackCha
   );
 };
 
+// Lightbox Component
+const Lightbox = ({ src, title, onClose }) => {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  return (
+    <div className="lightbox-overlay" onClick={onClose}>
+      <button className="lightbox-close" onClick={onClose} aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+        <img src={src} alt={title} className="lightbox-img" />
+        {title && <p className="lightbox-caption">{title}</p>}
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const [navScrolled, setNavScrolled] = useState(false);
+  const [lightbox, setLightbox] = useState(null);
   const cursorDotRef = useRef(null);
   const cursorRingRef = useRef(null);
   const hasMouse = useRef(false);
@@ -242,6 +272,15 @@ function App() {
       {/* CUSTOM CURSOR */}
       <div id="cursor-dot" ref={cursorDotRef}></div>
       <div id="cursor-ring" ref={cursorRingRef}></div>
+
+      {/* LIGHTBOX */}
+      {lightbox && (
+        <Lightbox
+          src={lightbox.src}
+          title={lightbox.title}
+          onClose={() => setLightbox(null)}
+        />
+      )}
 
       {/* NAV */}
       <nav id="navbar" className={navScrolled ? 'scrolled' : ''}>
@@ -386,10 +425,11 @@ function App() {
           <WorkCard
             title="Esport/Sport Jersey Layout"
             category="Layout Design · 2025"
-            description="A complete visual identity for a luxury skincare brand — logo to packaging, brand guidelines, and campaign photography art direction."
+            description="Developed custom jersey concepts for sports and esports teams, combining creativity with a professional look."
             imageUrl="/jersey.png"
             isLarge={true}
             fallbackChar="🎨"
+            onImageClick={(src, title) => setLightbox({ src, title })}
           />
           <WorkCard
             title="FORM Magazine Redesign"
@@ -398,6 +438,7 @@ function App() {
             imageUrl="/editorial-design.jpg"
             isLarge={false}
             fallbackChar="📰"
+            onImageClick={(src, title) => setLightbox({ src, title })}
           />
           <WorkCard
             title="Infinity Pioneers - A3VERIFILE"
@@ -406,22 +447,25 @@ function App() {
             imageUrl="/ux-design.png"
             isLarge={false}
             fallbackChar="📱"
+            onImageClick={(src, title) => setLightbox({ src, title })}
           />
           <WorkCard
-            title="Botanic — Organic Tea Range"
-            category="Packaging · 2023"
-            description="A 12-SKU packaging system for a premium tea brand — custom illustration, colour-coded variants, and eco-material specs."
-            imageUrl=""
+            title="Tarpaulin Design"
+            category="Layout Design · 2025"
+            description="Designed high-quality tarpaulins that effectively communicate event information while maintaining a clean and professional look."
+            imageUrl="/tarp.png"
             isLarge={false}
             fallbackChar="📦"
+            onImageClick={(src, title) => setLightbox({ src, title })}
           />
           <WorkCard
-            title="Aurea — Custom Typeface"
-            category="Typography · 2023"
-            description="A bespoke display typeface for a hospitality group — 4 weights, multilingual support, and usage guidelines."
-            imageUrl=""
+            title="Logo Designs"
+            category="Brand Identity · 2024"
+            description="A collection of logos designed for various clients across different industries."
+            imageUrl="/logos.png"
             isLarge={false}
             fallbackChar="✦"
+            onImageClick={(src, title) => setLightbox({ src, title })}
           />
         </div>
       </section>
