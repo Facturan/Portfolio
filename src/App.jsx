@@ -313,9 +313,9 @@ function App() {
             Since then, I've continued to improve my skills in graphic design, creating clean, engaging, and impactful designs that effectively communicate ideas and meet client needs.
           </p>
           <div className="about-stats">
-            <Counter target={8} suffix="+" label="Years Experience" />
-            <Counter target={120} suffix="+" label="Projects Done" />
-            <Counter target={40} suffix="+" label="Happy Clients" />
+            <Counter target={3} suffix="+" label="Years Experience" />
+            <Counter target={30} suffix="+" label="Projects Done" />
+            <Counter target={30} suffix="+" label="Happy Clients" />
           </div>
         </div>
         <div className="about-right reveal reveal-delay-2">
@@ -384,10 +384,10 @@ function App() {
         </div>
         <div className="work-grid">
           <WorkCard
-            title="Luminary — Brand Identity System"
-            category="Brand Identity · 2025"
+            title="Esport/Sport Jersey Layout"
+            category="Layout Design · 2025"
             description="A complete visual identity for a luxury skincare brand — logo to packaging, brand guidelines, and campaign photography art direction."
-            imageUrl="/project1.png"
+            imageUrl="/jersey.png"
             isLarge={true}
             fallbackChar="🎨"
           />
@@ -401,7 +401,7 @@ function App() {
           />
           <WorkCard
             title="Infinity Pioneers - A3VERIFILE"
-            category="UI / UX Design · 2024"
+            category="UI / UX Design · 2026"
             description="End-to-end product design for a mindfulness application — research, wireframes, component library, and final UI."
             imageUrl="/ux-design.png"
             isLarge={false}
